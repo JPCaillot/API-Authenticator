@@ -1,12 +1,14 @@
 package com.accountmanager.auth.infrastructure.entities;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
 
 @Entity
 @Table(name = "tb_user", schema = "auth")
+@Builder
 @Getter
 public class User {
     @Id
