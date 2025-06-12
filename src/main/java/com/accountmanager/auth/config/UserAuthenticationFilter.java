@@ -1,12 +1,14 @@
 package com.accountmanager.auth.config;
 
-import com.accountmanager.auth.infrastructure.entities.User;
+import com.accountmanager.auth.exception.AuthenticationApiException;
 import com.accountmanager.auth.infrastructure.repositories.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,9 +27,9 @@ public class UserAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain filterChain
+            @NonNull HttpServletRequest request,
+            @NonNull HttpServletResponse response,
+            @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
         if (checkIfEndpointIsNotPublic(request)) {
             String token = recoverTokenFromHeaders(request);
@@ -45,10 +47,12 @@ public class UserAuthenticationFilter extends OncePerRequestFilter {
 
                             SecurityContextHolder.getContext().setAuthentication(authentication);
                         },
-                        () -> {throw new RuntimeException("User not found");}
+                                () -> {
+                                    throw new AuthenticationApiException(HttpStatus.FORBIDDEN, "User not found");
+                                }
                 );
             } else {
-                throw new RuntimeException("Token not found");
+                throw new AuthenticationApiException(HttpStatus.FORBIDDEN, "Token not found");
             }
         }
         filterChain.doFilter(request, response);

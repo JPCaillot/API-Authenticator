@@ -1,5 +1,6 @@
-package com.accountmanager.auth.config;
+package com.accountmanager.auth.services;
 
+import com.accountmanager.auth.config.UserDetailsImpl;
 import com.accountmanager.auth.infrastructure.entities.User;
 import com.accountmanager.auth.infrastructure.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;

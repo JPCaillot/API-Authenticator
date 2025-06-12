@@ -3,7 +3,7 @@ package com.accountmanager.auth.controllers;
 import com.accountmanager.auth.domain.dto.CreateUserDto;
 import com.accountmanager.auth.domain.dto.LoginUserDto;
 import com.accountmanager.auth.domain.dto.RecoverJwtTokenDto;
-import com.accountmanager.auth.services.IUserService;
+import com.accountmanager.auth.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
-    private final IUserService userService;
+    private final UserService userService;
 
     @PostMapping("/login")
     public ResponseEntity<RecoverJwtTokenDto> authenticateUser(@RequestBody LoginUserDto loginUserDto) {
